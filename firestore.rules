@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Users Collection
+    // Matches /users/{userId}
+    match /users/{userId} {
+      // Allow users to read and write only their own user document
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // Sites Subcollection (Drafts/Private)
+      // Matches /users/{userId}/sites/{siteId}
+      match /sites/{siteId} {
+        // Allow users to read and write only their own sites
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+    
+    // Public Sites Collection
+    // Matches /publicSites/{siteId}
+    match /publicSites/{siteId} {
+      // Allow anyone to read published sites (no auth required)
+      allow read: if true;
+      
+      // Create: Allow if auth exists and the document's ownerUid matches the user's UID
+      allow create: if request.auth != null 
+                    && request.resource.data.ownerUid == request.auth.uid;
+      
+      // Update: Allow if owner matches and they aren't trying to change the ownerUid
+      allow update: if request.auth != null 
+                    && resource.data.ownerUid == request.auth.uid
+                    && request.resource.data.ownerUid == request.auth.uid;
+      
+      // Delete: Allow if the user owns the document
+      allow delete: if request.auth != null 
+                    && resource.data.ownerUid == request.auth.uid;
+    }
+  }
+}

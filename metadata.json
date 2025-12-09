@@ -1,0 +1,5 @@
+{
+  "name": "AI Landing Page Builder",
+  "description": "A production-ready platform to generate, edit, and publish landing pages using Gemini AI and Firebase.",
+  "requestFramePermissions": []
+}
