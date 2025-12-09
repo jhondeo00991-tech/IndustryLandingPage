@@ -4,7 +4,7 @@ import { SitePrompt } from "../types";
 // Initialize Gemini
 // Note: In a real production app, API calls should arguably go through a backend 
 // to protect the API KEY, but for this client-side demo, we use the env var directly.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: "AIzaSyBhs8PD0gWwVSIfeZ3Lmr6oQx1Uv4ICEGQ" });
 
 export const generateLandingPage = async (promptData: SitePrompt): Promise<{ html: string; seoTitle: string; seoDescription: string }> => {
   const model = "gemini-2.5-flash";
